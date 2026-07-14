@@ -1,0 +1,876 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>AI Career Counselor – BeginnerPath</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .counselor-page {
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* ════════════════════════════════════════════════════════════════════════════ */
+    /* SIDEBAR - CHAT HISTORY */
+    /* ════════════════════════════════════════════════════════════════════════════ */
+    .counselor-main {
+      display: flex;
+      flex: 1;
+      gap: 0;
+    }
+
+    .sidebar {
+      width: 280px;
+      background: #1b3191;
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #2d4db3;
+      overflow-y: auto;
+      padding: 1rem 0;
+    }
+
+    .sidebar-header {
+      padding: 1rem;
+      border-bottom: 1px solid #2d4db3;
+    }
+
+    .sidebar-title {
+      font-size: 0.9rem;
+      font-weight: 700;
+      margin: 0 0 0.75rem 0;
+      color: #fff;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-new-chat {
+      background: #60A5FA;
+      color: #fff;
+      border: none;
+      padding: 0.65rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      width: 100%;
+      transition: all 0.2s ease;
+    }
+
+    .btn-new-chat:hover {
+      background: #3b82f6;
+    }
+
+    .sidebar-content {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.75rem;
+    }
+
+    .chat-history-item {
+      background: rgba(255, 255, 255, 0.08);
+      padding: 0.7rem;
+      margin-bottom: 0.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border-left: 2px solid transparent;
+    }
+
+    .chat-history-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+    }
+
+    .chat-history-item.active {
+      background: rgba(255, 255, 255, 0.15);
+      border-left-color: #60A5FA;
+    }
+
+    .chat-history-date {
+      font-size: 0.65rem;
+      opacity: 0.6;
+      margin-top: 0.3rem;
+    }
+
+    .chat-history-preview {
+      font-size: 0.8rem;
+      opacity: 0.95;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      line-height: 1.3;
+    }
+
+    .sidebar-footer {
+      padding: 0.75rem 1rem;
+      border-top: 1px solid #2d4db3;
+      font-size: 0.7rem;
+      opacity: 0.5;
+      text-align: center;
+    }
+
+    .counselor-content {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .counselor-header {
+      background: linear-gradient(135deg, #0f1f5c 0%, #1b3191 100%);
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 2px 12px rgba(15, 31, 92, 0.25);
+    }
+
+    .counselor-header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      margin-bottom: 0.5rem;
+      color: #ffffff;
+      letter-spacing: 0.3px;
+    }
+
+    .counselor-header p {
+      font-size: 0.95rem;
+      color: #f0b429;
+      font-weight: 500;
+      opacity: 1;
+    }
+
+    .counselor-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 1.5rem;
+    }
+
+    /* NEW: visible profile banner - replaces the old silent/hidden injection */
+    .profile-banner {
+      display: none;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      background: #eef2ff;
+      border: 1px solid #c7d2fe;
+      color: #3730a3;
+      padding: 0.65rem 1rem;
+      border-radius: var(--r2, 10px);
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+
+    .profile-banner.show {
+      display: flex;
+    }
+
+    .profile-banner button {
+      background: none;
+      border: none;
+      color: #4338ca;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 0.8rem;
+      text-decoration: underline;
+      flex-shrink: 0;
+    }
+
+    .chat-window {
+      flex: 1;
+      background: var(--wh);
+      border-radius: var(--r3);
+      border: 1px solid var(--bd);
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--sh2);
+      overflow: hidden;
+    }
+
+    .chat-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .message {
+      display: flex;
+      gap: 0.75rem;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .message.user {
+      justify-content: flex-end;
+    }
+
+    .message-bubble {
+      max-width: 70%;
+      padding: 0.75rem 1rem;
+      border-radius: var(--r2);
+      word-wrap: break-word;
+      line-height: 1.6;
+    }
+
+    .message-bubble ul {
+      margin: 0.5rem 0;
+      padding-left: 1.25rem;
+    }
+
+    .message-bubble li {
+      margin-bottom: 0.35rem;
+    }
+
+    .message-bubble strong {
+      font-weight: 700;
+    }
+
+    .message.user .message-bubble {
+      background: var(--grad);
+      color: var(--wh);
+      border-bottom-right-radius: 2px;
+    }
+
+    .message.ai .message-bubble {
+      background: var(--b0);
+      color: var(--t1);
+      border-bottom-left-radius: 2px;
+      border: 1px solid var(--b1);
+    }
+
+    .message.ai .avatar {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--wh);
+      font-size: 0.95rem;
+      flex-shrink: 0;
+    }
+
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 0.75rem 1rem;
+    }
+
+    .typing-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--b5);
+      animation: typing 1.4s infinite;
+    }
+
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.5; }
+      30% { transform: translateY(-10px); opacity: 1; }
+    }
+
+    .chat-input-area {
+      padding: 1.5rem;
+      border-top: 1px solid var(--bd);
+      background: var(--wh);
+      display: flex;
+      gap: 0.75rem;
+    }
+
+    .input-field {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1rem;
+      background: var(--bg);
+      border: 1.5px solid var(--bd);
+      border-radius: var(--r2);
+      transition: var(--tr);
+    }
+
+    .input-field:focus-within {
+      border-color: var(--b5);
+      background: var(--wh);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .input-field input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      font-family: var(--ff);
+      font-size: 0.95rem;
+      color: var(--t1);
+    }
+
+    .input-field input::placeholder { color: var(--tm); }
+
+    .send-btn {
+      background: var(--grad);
+      color: var(--wh);
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--r2);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--tr);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .send-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+    .send-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .quick-btn {
+      background: var(--wh);
+      border: 1.5px solid var(--bd);
+      padding: 1rem;
+      border-radius: var(--r2);
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--b6);
+      transition: var(--tr);
+    }
+
+    .quick-btn:hover {
+      border-color: var(--b6);
+      background: #1b3191;
+      box-shadow: var(--sh2);
+    }
+
+    @media (max-width: 600px) {
+      .message-bubble { max-width: 85%; }
+      .counselor-header h1 { font-size: 1.3rem; }
+      .sidebar { display: none; }
+    }
+  </style>
+</head>
+<body class="counselor-page">
+
+  <!-- HEADER -->
+  <div class="counselor-header">
+    <h1>🤖 AI Career Counselor</h1>
+    <p>Get personalized career guidance 24/7</p>
+  </div>
+
+  <!-- MAIN LAYOUT (sidebar + content) -->
+  <div class="counselor-main">
+    
+    <!-- SIDEBAR - CHAT HISTORY -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <h2 class="sidebar-title">Chat History</h2>
+        <button class="btn-new-chat" onclick="startNewChat()">+ New Chat</button>
+      </div>
+      <div class="sidebar-content" id="chatHistoryList">
+        <!-- Will be populated by JavaScript -->
+      </div>
+      <div class="sidebar-footer"></div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="counselor-content">
+      <!-- CHAT CONTAINER -->
+      <div class="counselor-container">
+
+    <!-- VISIBLE PROFILE BANNER (only shows if logged in and profile loaded) -->
+    <div class="profile-banner" id="profileBanner">
+      <span id="profileBannerText"></span>
+      <button onclick="clearProfileContext()">Chat without my profile</button>
+    </div>
+
+    <div class="chat-window">
+      <!-- MESSAGES AREA -->
+      <div class="chat-messages" id="chatMessages">
+        <div class="message ai">
+          <div class="avatar">🤖</div>
+          <div class="message-bubble">
+            <strong>Hi! I'm your AI Career Counselor.</strong>
+            <br/><br/>
+            I'm here to help you with career guidance, skill development, course recommendations, and answer any questions about your learning journey. 
+            <br/><br/>
+            What would you like help with today?
+          </div>
+        </div>
+
+        <!-- Quick suggestions -->
+        <div style="display: flex; gap: 0.75rem; margin-top: 1rem; flex-wrap: wrap;">
+          <button class="quick-btn" onclick="sendQuickMessage('What career paths suit me best?')">Best Careers</button>
+          <button class="quick-btn" onclick="sendQuickMessage('How do I start learning web development?')">Web Dev Path</button>
+          <button class="quick-btn" onclick="sendQuickMessage('What skills do I need?')">Required Skills</button>
+          <button class="quick-btn" onclick="sendQuickMessage('Which course should I take?')">Course Help</button>
+        </div>
+      </div>
+
+      <!-- INPUT AREA -->
+      <div class="chat-input-area">
+        <div class="input-field">
+          <i class="ti ti-message"></i>
+          <input 
+            type="text" 
+            id="messageInput" 
+            placeholder="Ask me about careers, courses, or learning paths..."
+            autocomplete="off"
+          />
+        </div>
+        <button class="send-btn" id="sendBtn" onclick="sendMessage()">
+          <i class="ti ti-send"></i> Send
+        </button>
+      </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BACK TO DASHBOARD LINK -->
+  <div style="text-align: center; padding: 1.5rem;">
+    <a href="dashboard.html" class="btn btn-ghost" style="font-size: 0.85rem;">← Back to Dashboard</a>
+  </div>
+
+  <!-- SCRIPTS -->
+  <script>
+    // ════════════════════════════════════════════════════════════════════════════
+    // CONFIG
+    // ════════════════════════════════════════════════════════════════════════════
+
+    const BACKEND_URL = 'http://localhost:5000';
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // CONVERSATION HISTORY & SYSTEM PROMPT
+    // ════════════════════════════════════════════════════════════════════════════
+
+    let conversationHistory = [];
+    let useProfileContext = true; // user can toggle this off via the banner
+    let currentSessionId = null; // Track current chat session for history saving
+
+    const BASE_SYSTEM_PROMPT = `You are an AI Career Counselor for BeginnerPath, an educational platform for Pakistani students. Your role is to provide personalized career guidance, course recommendations, and learning support.
+
+CORE RESPONSIBILITIES:
+- Help students explore career paths based on their education stream (Pre-Medical, Pre-Engineering, ICS, Commerce, Arts)
+- Recommend courses and learning resources
+- Provide advice on skill development and career progression
+- Answer questions about different professions, salaries, and job market
+- Offer motivation and support throughout their learning journey
+- Help students set realistic goals and create action plans
+- If the user asks something unrelated to careers, courses, or learning (e.g. general knowledge, coding help, casual chat), still answer helpfully and briefly, then gently steer back to how you can help with their career/learning journey
+
+AVAILABLE CAREER PATHS:
+1. Bioinformatics (Pre-Medical → Healthcare AI, Genomics)
+2. Computer Science (ICS/Engineering → Software Development, AI/ML)
+3. Web Development (Technical skills → Frontend/Full Stack)
+4. Data Science (Analytics + Technical → Data roles)
+5. Business Analysis (Commerce → Business Intelligence)
+6. UI/UX Design (Creative + Technical → Design roles)
+7. Medical Science (Pre-Medical → Healthcare professions)
+
+PERSONALITY:
+- Friendly, encouraging, and professional
+- Patient and non-judgmental
+- Solution-focused and practical
+- Knowledgeable about Pakistani education system and job market
+
+RESPONSE STYLE:
+- Keep responses clear and concise (2-3 short paragraphs)
+- Use bullet points for lists
+- Include specific resource recommendations when relevant
+- Only ask clarifying questions when the request is genuinely ambiguous - do not always ask questions back
+- Provide actionable next steps
+
+Never:
+- Give medical or legal advice
+- Guarantee job placement
+- Recommend dropping out of school
+- Make unrealistic salary promises
+- Assume the user's stream, interests, or background unless it was actually provided to you in this conversation`;
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // MARKDOWN RENDERING (bold + bullet lists) - fixes raw **text** showing up
+    // ════════════════════════════════════════════════════════════════════════════
+
+    function renderMarkdown(text) {
+      let safe = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+
+      safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+      const lines = safe.split('\n');
+      let html = '';
+      let inList = false;
+
+      for (const line of lines) {
+        const trimmed = line.trim();
+        if (trimmed.startsWith('- ')) {
+          if (!inList) {
+            html += '<ul>';
+            inList = true;
+          }
+          html += `<li>${trimmed.slice(2)}</li>`;
+        } else {
+          if (inList) {
+            html += '</ul>';
+            inList = false;
+          }
+          if (trimmed.length > 0) {
+            html += `<p style="margin:0.4rem 0;">${trimmed}</p>`;
+          }
+        }
+      }
+      if (inList) html += '</ul>';
+
+      return html;
+    }
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // USER PROFILE - fetched from MongoDB via backend, NOT guessed from localStorage
+    // ════════════════════════════════════════════════════════════════════════════
+
+    async function loadUserProfile() {
+      const token = localStorage.getItem('token');
+
+      if (!token) {
+        return; // Not logged in - chat works normally, zero assumptions
+      }
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/user/profile`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+
+        if (!response.ok) {
+          console.warn('Could not load profile, continuing without it.');
+          return;
+        }
+
+        const data = await response.json();
+        const user = data.user;
+
+        if (user && user.onboardingComplete) {
+          applyProfileContext(user);
+        }
+
+      } catch (error) {
+        console.warn('Profile fetch failed, continuing without it:', error.message);
+      }
+    }
+
+    function applyProfileContext(user) {
+      const parts = [];
+      if (user.stream) parts.push(`stream: ${user.stream}`);
+      if (user.interests && user.interests.length) parts.push(`interests: ${user.interests.join(', ')}`);
+      if (user.careerGoal) parts.push(`career goal: ${user.careerGoal}`);
+
+      if (parts.length === 0) return;
+
+      const banner = document.getElementById('profileBanner');
+      const bannerText = document.getElementById('profileBannerText');
+      bannerText.textContent = `Personalizing using your profile — ${parts.join(' • ')}`;
+      banner.classList.add('show');
+
+      window._profileContextLine = `For context, here is the student's saved profile: ${parts.join(', ')}.`;
+    }
+
+    function clearProfileContext() {
+      useProfileContext = false;
+      document.getElementById('profileBanner').classList.remove('show');
+    }
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // CHAT HISTORY - Save and load conversations from MongoDB
+    // ════════════════════════════════════════════════════════════════════════════
+
+    async function saveMessageToDatabase(userMessage, aiResponse) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.warn('No token found - user may not be logged in');
+        return;
+      }
+
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/counselor/save-message`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+          },
+          body: JSON.stringify({
+            sessionId: currentSessionId,
+            userMessage: userMessage,
+            aiResponse: aiResponse
+          })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          if (!currentSessionId && data.sessionId) {
+            currentSessionId = data.sessionId;
+            console.log('✅ New session created:', currentSessionId);
+          }
+        } else {
+          console.error('Failed to save message - API returned:', response.status);
+        }
+      } catch (error) {
+        console.error('Save message error:', error);
+      }
+    }
+
+    async function loadChatHistory() {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.warn('No token - cannot load chat history');
+        return;
+      }
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/counselor/history`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) {
+          console.error('Chat history API returned:', response.status);
+          return;
+        }
+        const data = await response.json();
+        if (data.success && data.sessions) {
+          console.log('✅ Loaded', data.sessions.length, 'past conversations');
+          displayChatHistory(data.sessions);
+        }
+      } catch (error) {
+        console.error('Failed to load chat history:', error);
+      }
+    }
+
+    function displayChatHistory(sessions) {
+      const historyList = document.getElementById('chatHistoryList');
+      if (!sessions || sessions.length === 0) {
+        historyList.innerHTML = '<p style="color: rgba(255,255,255,0.5); text-align: center; padding: 1rem;">No conversations yet</p>';
+        return;
+      }
+      historyList.innerHTML = sessions.map(session => `
+        <div class="chat-history-item ${session.sessionId === currentSessionId ? 'active' : ''}" onclick="loadSession('${session.sessionId}')">
+          <div class="chat-history-preview">${session.preview}</div>
+          <div class="chat-history-date">${new Date(session.updatedAt).toLocaleDateString()}</div>
+        </div>
+      `).join('');
+    }
+
+    async function loadSession(sessionId) {
+      const token = localStorage.getItem('token');
+      if (!token) {
+        console.warn('No token - cannot load session');
+        return;
+      }
+      try {
+        const response = await fetch(`${BACKEND_URL}/api/counselor/session/${sessionId}`, {
+          method: 'GET',
+          headers: { 'Authorization': `Bearer ${token}` }
+        });
+        if (!response.ok) {
+          console.error('Load session API returned:', response.status);
+          return;
+        }
+        const data = await response.json();
+        if (data.success && data.messages) {
+          currentSessionId = data.sessionId;
+          conversationHistory = data.messages.map(msg => ({ role: msg.role, content: msg.content }));
+          document.getElementById('chatMessages').innerHTML = '';
+          conversationHistory.forEach(msg => addMessageToUI(msg.content, msg.role));
+          console.log('✅ Loaded session with', data.messages.length, 'messages');
+          loadChatHistory();
+        }
+      } catch (error) {
+        console.error('Failed to load session:', error);
+      }
+    }
+
+    function startNewChat() {
+      currentSessionId = null;
+      conversationHistory = [];
+      document.getElementById('chatMessages').innerHTML = `
+        <div class="message ai">
+          <div class="avatar">🤖</div>
+          <div class="message-bubble">
+            <strong>Hi! I'm your AI Career Counselor.</strong>
+            <br/><br/>
+            What would you like help with today?
+          </div>
+        </div>
+      `;
+      document.getElementById('messageInput').value = '';
+      document.getElementById('messageInput').focus();
+      loadChatHistory();
+    }
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // MESSAGE HANDLING
+    // ════════════════════════════════════════════════════════════════════════════
+
+    function sendMessage() {
+      const input = document.getElementById('messageInput');
+      const message = input.value.trim();
+
+      if (!message) return;
+
+      addMessageToUI(message, 'user');
+      input.value = '';
+
+      getCounselorResponse(message);
+    }
+
+    function sendQuickMessage(message) {
+      document.getElementById('messageInput').value = message;
+      sendMessage();
+    }
+
+    function addMessageToUI(text, role) {
+      const messagesDiv = document.getElementById('chatMessages');
+      const messageDiv = document.createElement('div');
+      messageDiv.className = `message ${role}`;
+
+      if (role === 'ai') {
+        messageDiv.innerHTML = `
+          <div class="avatar">🤖</div>
+          <div class="message-bubble">${renderMarkdown(text)}</div>
+        `;
+      } else {
+        const bubble = document.createElement('div');
+        bubble.className = 'message-bubble';
+        bubble.textContent = text;
+        messageDiv.appendChild(bubble);
+      }
+
+      messagesDiv.appendChild(messageDiv);
+      scrollToBottom();
+    }
+
+    function showTypingIndicator() {
+      const messagesDiv = document.getElementById('chatMessages');
+      const typingDiv = document.createElement('div');
+      typingDiv.className = 'message ai';
+      typingDiv.id = 'typingIndicator';
+      typingDiv.innerHTML = `
+        <div class="avatar">🤖</div>
+        <div class="typing-indicator">
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+          <div class="typing-dot"></div>
+        </div>
+      `;
+      messagesDiv.appendChild(typingDiv);
+      scrollToBottom();
+    }
+
+    function removeTypingIndicator() {
+      const typing = document.getElementById('typingIndicator');
+      if (typing) typing.remove();
+    }
+
+    function scrollToBottom() {
+      const messagesDiv = document.getElementById('chatMessages');
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // API CALL TO BACKEND
+    // ════════════════════════════════════════════════════════════════════════════
+
+    async function getCounselorResponse(userMessage) {
+      const API_ENDPOINT = `${BACKEND_URL}/api/counselor`;
+
+      conversationHistory.push({ role: 'user', content: userMessage });
+
+      showTypingIndicator();
+      document.getElementById('sendBtn').disabled = true;
+      document.getElementById('messageInput').disabled = true;
+
+      let systemPrompt = BASE_SYSTEM_PROMPT;
+      if (useProfileContext && window._profileContextLine) {
+        systemPrompt += `\n\n${window._profileContextLine}`;
+      }
+
+      try {
+        const response = await fetch(API_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userMessage: userMessage,
+            conversationHistory: conversationHistory,
+            systemPrompt: systemPrompt
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        removeTypingIndicator();
+
+        if (data.counselorResponse) {
+          const aiMessage = data.counselorResponse;
+          addMessageToUI(aiMessage, 'ai');
+          conversationHistory.push({ role: 'assistant', content: aiMessage });
+          
+          // Save message to database for history
+          saveMessageToDatabase(userMessage, aiMessage);
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        removeTypingIndicator();
+        addMessageToUI(
+          '❌ Sorry, I encountered an error. Please make sure the backend server is running on port 5000. ' +
+          'Error: ' + error.message,
+          'ai'
+        );
+      } finally {
+        document.getElementById('sendBtn').disabled = false;
+        document.getElementById('messageInput').disabled = false;
+        document.getElementById('messageInput').focus();
+      }
+    }
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // KEYBOARD SUPPORT
+    // ════════════════════════════════════════════════════════════════════════════
+
+    document.getElementById('messageInput').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    // ════════════════════════════════════════════════════════════════════════════
+    // INIT
+    // ════════════════════════════════════════════════════════════════════════════
+
+    window.addEventListener('DOMContentLoaded', function() {
+      const token = localStorage.getItem('token');
+      console.log('✅ Page loaded. Token exists:', !!token);
+      loadUserProfile();
+      loadChatHistory(); // Load past conversations
+      document.getElementById('messageInput').focus();
+    });
+  </script>
+</body>
+</html>

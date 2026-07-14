@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Quiz Results - BeginnerPath</title>
+  <style>
+    :root {
+      --primary: #3B82F6;
+      --success: #10B981;
+      --danger: #EF4444;
+      --bg: #F3F4F6;
+      --wh: #FFFFFF;
+      --bd: #E5E7EB;
+      --text1: #1F2937;
+      --text2: #6B7280;
+      --radius: 8px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; background: var(--bg); }
+    .navbar { background: var(--wh); border-bottom: 1px solid var(--bd); padding: 1rem 2rem; box-shadow: var(--shadow); }
+    .nav-container { max-width: 1200px; margin: 0 auto; display: flex; justify-content: space-between; align-items: center; }
+    .logo { font-weight: 800; font-size: 1.3rem; color: #0a174b; }
+    .container { max-width: 700px; margin: 2rem auto; padding: 0 1rem; }
+    .results-card { background: var(--wh); padding: 2rem; border-radius: var(--radius); box-shadow: var(--shadow); text-align: center; margin-bottom: 2rem; }
+    .result-icon { font-size: 4rem; margin-bottom: 1rem; }
+    .result-title { font-size: 1.8rem; font-weight: 800; color: var(--text1); margin-bottom: 0.5rem; }
+    .result-desc { color: var(--text2); font-size: 1rem; margin-bottom: 2rem; }
+    .score-display { background: var(--bg); padding: 1.5rem; border-radius: var(--radius); margin-bottom: 2rem; }
+    .score-number { font-size: 3rem; font-weight: 800; color: var(--primary); }
+    .score-label { color: var(--text2); font-size: 0.95rem; }
+    .btns { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-bottom: 2rem; }
+    .btn { padding: 0.75rem 1.5rem; border: none; border-radius: var(--radius); font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; font-size: 0.95rem; }
+    .btn-primary { background: var(--primary); color: white; }
+    .btn-primary:hover { opacity: 0.9; }
+    .btn-secondary { background: var(--bd); color: var(--text1); }
+    .btn-secondary:hover { background: #d1d5db; }
+    .btn-block { grid-column: 1/-1; width: 100%; }
+    .failed { background: #FEE2E2; padding: 1.5rem; border-radius: var(--radius); text-align: center; }
+    .failed h3 { color: #991B1B; margin-bottom: 0.5rem; }
+    .failed p { color: #7F1D1D; font-size: 0.95rem; }
+    .success-msg { background: #DCFCE7; padding: 1.5rem; border-radius: var(--radius); text-align: center; }
+    .success-msg h3 { color: #166534; margin-bottom: 0.5rem; }
+    .success-msg p { color: #14532D; font-size: 0.95rem; }
+    @media(max-width:640px) { .btns { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="nav-container">
+      <div class="logo">BeginnerPath</div>
+      <a href="dashboard.html" style="color: var(--primary); text-decoration: none; font-weight: 600;">Dashboard</a>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="results-card">
+      <div class="result-icon" id="resultIcon">🎯</div>
+      <h1 class="result-title" id="resultTitle">Quiz Complete!</h1>
+      <p class="result-desc" id="resultDesc">Great effort!</p>
+
+      <div class="score-display">
+        <div class="score-number" id="scoreDisplay">85</div>
+        <div class="score-label">Your Score</div>
+      </div>
+    </div>
+
+    <!-- PASS / FAIL SECTION -->
+    <div id="statusSection"></div>
+
+    <!-- ACTIONS -->
+    <div class="btns">
+      <a href="roadmap.html" class="btn btn-secondary">← Back to Roadmap</a>
+      <a href="dashboard.html" class="btn btn-primary">Dashboard</a>
+    </div>
+  </div>
+
+  <script>
+    // ✅ FIXED: Helper function to get token (supports both keys)
+    function getToken() {
+      return localStorage.getItem('authToken') || localStorage.getItem('token');
+    }
+
+    function init() {
+      const token = getToken();
+      if (!token) { 
+        window.location.href = 'login.html'; 
+        return; 
+      }
+
+      const result = JSON.parse(localStorage.getItem('quizResult') || '{}');
+      if (!result.score) { alert('No quiz result found'); window.location.href = 'roadmap.html'; return; }
+
+      const passed = result.passed;
+      const score = result.score;
+
+      // Update score display
+      document.getElementById('scoreDisplay').textContent = score;
+
+      const statusSection = document.getElementById('statusSection');
+
+      if (passed) {
+        document.getElementById('resultIcon').textContent = '🎉';
+        document.getElementById('resultTitle').textContent = 'Congratulations!';
+        document.getElementById('resultDesc').textContent = 'You passed the quiz!';
+
+        statusSection.innerHTML = `
+          <div class="success-msg">
+            <h3>✅ Quiz Passed!</h3>
+            <p>This course is now marked as complete. Complete all courses and pass all quizzes in this specialization to earn your certificate!</p>
+          </div>
+        `;
+      } else {
+        document.getElementById('resultIcon').textContent = '📚';
+        document.getElementById('resultTitle').textContent = 'Keep Trying!';
+        document.getElementById('resultDesc').textContent = 'You need 60% to pass. Review the material and retake the quiz.';
+        document.getElementById('scoreDisplay').style.color = '#EF4444';
+
+        statusSection.innerHTML = `
+          <div class="failed">
+            <h3>Passing Score: 60%</h3>
+            <p>You scored ${score}%. Review the course material and retake the quiz.</p>
+          </div>
+        `;
+
+        // Change button text
+        document.querySelector('.btn-secondary').textContent = '← Try Again';
+        document.querySelector('.btn-secondary').href = 'roadmap.html';
+      }
+
+      // Clear result from storage
+      localStorage.removeItem('quizResult');
+    }
+
+    window.addEventListener('DOMContentLoaded', init);
+  </script>
+</body>
+</html>
