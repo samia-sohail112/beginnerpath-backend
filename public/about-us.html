@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us - BeginnerPath</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+        }
+
+        header {
+            background: white;
+            padding: 16px 40px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .logo-link {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            cursor: pointer;
+        }
+
+        .logo-image {
+            height: 50px;
+            width: auto;
+        }
+
+
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-header h2 {
+            font-size: 36px;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 60px 40px;
+        }
+
+        .page-header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .page-header h2 {
+            font-size: 36px;
+            color: #1a1a1a;
+            margin-bottom: 15px;
+        }
+
+        .page-header p {
+            font-size: 16px;
+            color: #666;
+        }
+
+        .section {
+            background: white;
+            padding: 40px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+
+        .section h3 {
+            font-size: 24px;
+            color: #253996;
+            margin-bottom: 20px;
+        }
+
+        .section p {
+            font-size: 15px;
+            line-height: 1.8;
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .value-card {
+            background: #f8f9fa;
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #2a3f9c;
+        }
+
+        .value-icon {
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+
+        .value-title {
+            font-weight: 700;
+            color: #1a1a1a;
+            margin-bottom: 8px;
+        }
+
+        .value-description {
+            font-size: 13px;
+            color: #666;
+            line-height: 1.6;
+        }
+
+        footer {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: white;
+            margin-top: 60px;
+            padding: 60px 40px 20px;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 15px;
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section li {
+            margin-bottom: 10px;
+        }
+
+        .footer-section a {
+            color: #bbb;
+            text-decoration: none;
+            font-size: 13px;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: white;
+        }
+
+        .footer-bottom {
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 12px;
+            color: #888;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo-link">
+            <img src="beginnerpath-logo.png" alt="BeginnerPath" class="logo-image"/>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="page-header">
+            <h2>About BeginnerPath</h2>
+            <p>Empowering Pakistani students to build their dream careers</p>
+        </div>
+
+        <!-- Our Mission -->
+        <div class="section">
+            <h3>Our Mission</h3>
+            <p>
+                BeginnerPath is dedicated to revolutionizing career guidance for Pakistani students. We believe that every student deserves access to personalized, data-driven career counseling that helps them make informed decisions about their future.
+            </p>
+            <p>
+                Our AI-powered platform analyzes student profiles, interests, and learning styles to create customized roadmaps leading to successful careers. We bridge the gap between education and industry, ensuring students are prepared for the job market they'll enter.
+            </p>
+        </div>
+
+        <!-- Why We Started -->
+        <div class="section">
+            <h3>Why We Started</h3>
+            <p>
+                In Pakistan, career guidance is fragmented. Many students don't know what career options are available to them. They often choose paths based on family pressure or limited information, leading to dissatisfaction and wasted potential.
+            </p>
+            <p>
+                We saw an opportunity to use technology and AI to provide every Pakistani student with:
+            </p>
+            <ul style="margin-left: 20px; margin-top: 15px;">
+                <li style="margin-bottom: 10px;"><strong>Personalized career guidance</strong> - Tailored to their unique profile</li>
+                <li style="margin-bottom: 10px;"><strong>Structured learning paths</strong> - Clear roadmaps from today to career</li>
+                <li style="margin-bottom: 10px;"><strong>Skill development</strong> - Industry-relevant courses and projects</li>
+                <li style="margin-bottom: 10px;"><strong>Job placement support</strong> - Help landing their first job</li>
+                <li style="margin-bottom: 10px;"><strong>Continuous mentoring</strong> - AI counselor available 24/7</li>
+            </ul>
+        </div>
+
+        <!-- Our Values -->
+        <div class="section">
+            <h3>Our Core Values</h3>
+            <div class="values-grid">
+                <div class="value-card">
+                    <div class="value-icon"></div>
+                    <div class="value-title">Education First</div>
+                    <div class="value-description">We prioritize quality education and skill development above all else.</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"></div>
+                    <div class="value-title">Innovation</div>
+                    <div class="value-description">We use cutting-edge AI and technology to improve career guidance.</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"></div>
+                    <div class="value-title">Accessibility</div>
+                    <div class="value-description">Quality career guidance should be affordable and accessible to all.</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"></div>
+                    <div class="value-title">Growth</div>
+                    <div class="value-description">We believe in continuous learning and personal development.</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"></div>
+                    <div class="value-title">Excellence</div>
+                    <div class="value-description">We strive for excellence in everything we do for our students.</div>
+                </div>
+                <div class="value-card">
+                    <div class="value-icon"></div>
+                    <div class="value-title">Pakistan First</div>
+                    <div class="value-description">We focus specifically on Pakistani student needs and job market.</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- What We Offer -->
+        <div class="section">
+            <h3>What We Offer</h3>
+            <p>
+                <strong>Personalized Career Matching:</strong> Our AI analyzes your background, skills, interests, and learning style to recommend the best career paths for you.
+            </p>
+            <p>
+                <strong>Structured Roadmaps:</strong> Each career path includes a 4-phase learning roadmap with specific courses, projects, and milestones to reach your goal.
+            </p>
+            <p>
+                <strong>Skill Development:</strong> Access to 500+ carefully curated courses covering technical skills, soft skills, and industry-specific knowledge.
+            </p>
+            <p>
+                <strong>AI Counselor:</strong> Chat with our AI counselor 24/7 for guidance, motivation, and answers to your career questions.
+            </p>
+            <p>
+                <strong>Progress Tracking:</strong> Monitor your progress, earn badges, and celebrate milestones as you work towards your goals.
+            </p>
+            <p>
+                <strong>Community Support:</strong> Connect with other students, share experiences, and learn from each other's journeys.
+            </p>
+        </div>
+
+
+    </div>
+
+    <footer>
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>BeginnerPath</h4>
+                <p style="font-size: 13px; color: #bbb; line-height: 1.8;">Empowering Pakistani students to build their dream careers.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Product</h4>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="explore-careers.html">Explore Careers</a></li>
+                    <li><a href="dashboard.html">Dashboard</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="about-us.html">About Us</a></li>
+                    <li><a href="privacy-policy.html">Privacy Policy</a></li>
+                    <li><a href="terms-conditions.html">Terms & Conditions</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2025 BeginnerPath. All rights reserved.</p>
+            <div style="display: flex; gap: 20px;">
+                <a href="privacy-policy.html" style="color: #888; text-decoration: none;">Privacy</a>
+                <a href="terms-conditions.html" style="color: #888; text-decoration: none;">Terms</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

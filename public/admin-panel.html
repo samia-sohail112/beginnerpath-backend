@@ -1,0 +1,1222 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>Admin Panel – BeginnerPath</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    .admin-page {
+      background: var(--bg);
+      min-height: 100vh;
+      display: flex;
+    }
+
+    /* ────────────────────────────────── SIDEBAR ────────────────────────────────── */
+
+    .admin-sidebar {
+      width: 280px;
+      background: linear-gradient(135deg, #0F1B4C 0%, #1A2F6E 100%);
+      color: var(--wh);
+      padding: 2rem 0;
+      overflow-y: auto;
+      box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+      position: fixed;
+      height: 100vh;
+      left: 0;
+      top: 0;
+      z-index: 100;
+    }
+
+    .admin-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 1.5rem 2rem;
+      margin-bottom: 2rem;
+      font-size: 1.3rem;
+      font-weight: 800;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .admin-nav-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 2rem;
+      color: rgba(255, 255, 255, 0.7);
+      cursor: pointer;
+      transition: var(--tr);
+      border-left: 3px solid transparent;
+      position: relative;
+    }
+
+    .admin-nav-item:hover {
+      color: var(--wh);
+      background: rgba(255, 255, 255, 0.1);
+    }
+
+    .admin-nav-item.active {
+      color: var(--wh);
+      background: rgba(255, 255, 255, 0.15);
+      border-left-color: #60A5FA;
+    }
+
+    .admin-nav-item i {
+      font-size: 1.2rem;
+      width: 24px;
+    }
+
+    .admin-nav-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 1rem 2rem 0.5rem;
+      color: rgba(255, 255, 255, 0.5);
+      font-weight: 700;
+    }
+
+    .admin-logout {
+      position: absolute;
+      bottom: 2rem;
+      left: 0;
+      right: 0;
+      padding: 1rem 2rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      margin: 0 1rem;
+      text-align: center;
+    }
+
+    .logout-btn {
+      background: rgba(239, 68, 68, 0.2);
+      color: #FCA5A5;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      padding: 0.75rem 1rem;
+      border-radius: var(--r1);
+      cursor: pointer;
+      font-weight: 600;
+      transition: var(--tr);
+      width: 100%;
+      font-family: var(--ff);
+    }
+
+    .logout-btn:hover {
+      background: rgba(239, 68, 68, 0.3);
+      border-color: rgba(239, 68, 68, 0.6);
+    }
+
+    /* ────────────────────────────────── MAIN CONTENT ────────────────────────────────── */
+
+    .admin-main {
+      flex: 1;
+      margin-left: 280px;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .admin-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2rem;
+    }
+
+    .admin-header h1 {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--t1);
+    }
+
+    .admin-user-info {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      background: var(--wh);
+      padding: 0.75rem 1.5rem;
+      border-radius: var(--r2);
+      border: 1px solid var(--bd);
+    }
+
+    .admin-user-avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: var(--grad);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--wh);
+      font-weight: 700;
+    }
+
+    /* ────────────────────────────────── SECTIONS ────────────────────────────────── */
+
+    .admin-section {
+      display: none;
+    }
+
+    .admin-section.active {
+      display: block;
+    }
+
+    .section-title {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--t1);
+      margin-bottom: 1.5rem;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--wh);
+      border: 1px solid var(--bd);
+      border-radius: var(--r2);
+      padding: 1.5rem;
+      transition: var(--tr);
+    }
+
+    .stat-card:hover {
+      border-color: var(--b5);
+      box-shadow: var(--sh2);
+    }
+
+    .stat-icon {
+      font-size: 2rem;
+      margin-bottom: 0.75rem;
+      display: block;
+    }
+
+    .stat-label {
+      color: var(--tm);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--t1);
+    }
+
+    .loading {
+      text-align: center;
+      padding: 2rem;
+      color: var(--tm);
+    }
+
+    .error {
+      background: #FEE2E2;
+      color: #991B1B;
+      padding: 1rem;
+      border-radius: var(--r1);
+      margin-bottom: 1rem;
+    }
+
+    /* ────────────────────────────────── TABLES ────────────────────────────────── */
+
+    .admin-table-container {
+      background: var(--wh);
+      border: 1px solid var(--bd);
+      border-radius: var(--r2);
+      overflow: hidden;
+      box-shadow: var(--sh1);
+    }
+
+    .admin-table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .admin-table thead {
+      background: var(--bg);
+      border-bottom: 1px solid var(--bd);
+    }
+
+    .admin-table th {
+      padding: 1rem;
+      text-align: left;
+      font-weight: 700;
+      color: var(--t1);
+      font-size: 0.9rem;
+    }
+
+    .admin-table td {
+      padding: 1rem;
+      border-top: 1px solid var(--bd);
+      color: var(--t2);
+      font-size: 0.9rem;
+    }
+
+    .admin-table tr:hover {
+      background: var(--bg);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 0.4rem 0.8rem;
+      border-radius: 100px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+
+    .badge-active {
+      background: var(--ok0);
+      color: #065F46;
+    }
+
+    .badge-inactive {
+      background: #FEE2E2;
+      color: #7F1D1D;
+    }
+
+    /* ────────────────────────────────── FORMS ────────────────────────────────── */
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .form-group label {
+      font-weight: 600;
+      margin-bottom: 0.5rem;
+      color: var(--t1);
+      font-size: 0.9rem;
+    }
+
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      padding: 0.75rem 1rem;
+      border: 1.5px solid var(--bd);
+      border-radius: var(--r1);
+      font-family: var(--ff);
+      font-size: 0.9rem;
+      transition: var(--tr);
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: var(--b5);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+    }
+
+    .admin-action-btns {
+      display: flex;
+      gap: 0.75rem;
+      margin-top: 1.5rem;
+    }
+
+    .admin-btn {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: var(--r1);
+      cursor: pointer;
+      font-weight: 600;
+      font-family: var(--ff);
+      transition: var(--tr);
+      font-size: 0.9rem;
+    }
+
+    .admin-btn-primary {
+      background: var(--grad);
+      color: var(--wh);
+    }
+
+    .admin-btn-primary:hover {
+      opacity: 0.9;
+    }
+
+    .admin-btn-secondary {
+      background: var(--bd);
+      color: var(--t1);
+    }
+
+    .admin-btn-secondary:hover {
+      background: var(--b1);
+    }
+
+    .admin-btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #DC2626;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    .admin-btn-danger:hover {
+      background: rgba(239, 68, 68, 0.3);
+    }
+
+    .progress-bar-container {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .progress-bar {
+      flex: 1;
+      height: 8px;
+      background: var(--bd);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--grad);
+      width: 100%;
+    }
+
+    /* ────────────────────────────────── RESPONSIVE ────────────────────────────────── */
+
+    @media (max-width: 768px) {
+      .admin-sidebar {
+        width: 200px;
+      }
+
+      .admin-main {
+        margin-left: 200px;
+        padding: 1rem;
+      }
+
+      .admin-table {
+        font-size: 0.8rem;
+      }
+
+      .admin-table th,
+      .admin-table td {
+        padding: 0.75rem 0.5rem;
+      }
+
+      .stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .admin-sidebar {
+        position: fixed;
+        width: 0;
+        overflow: hidden;
+      }
+
+      .admin-main {
+        margin-left: 0;
+      }
+    }
+  </style>
+</head>
+<body class="admin-page">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="admin-logo">
+      🎓 BeginnerPath Admin
+    </div>
+
+    <div class="admin-nav-label">Dashboard</div>
+    <div class="admin-nav-item active" onclick="showSection(this, 'dashboard')">
+      <i class="ti ti-layout-dashboard"></i> Dashboard
+    </div>
+
+    <div class="admin-nav-label">Management</div>
+    <div class="admin-nav-item" onclick="showSection(this, 'users')">
+      <i class="ti ti-users"></i> Users
+    </div>
+    <div class="admin-nav-item" onclick="showSection(this, 'courses')">
+      <i class="ti ti-books"></i> Courses
+    </div>
+    <div class="admin-nav-item" onclick="showSection(this, 'careers')">
+      <i class="ti ti-briefcase"></i> Career Paths
+    </div>
+
+    <div class="admin-nav-label">Analytics</div>
+    <div class="admin-nav-item" onclick="showSection(this, 'progress')">
+      <i class="ti ti-chart-line"></i> Student Progress
+    </div>
+    <div class="admin-nav-item" onclick="showSection(this, 'analytics')">
+      <i class="ti ti-chart-bar"></i> Analytics
+    </div>
+
+    <div class="admin-nav-label">Settings</div>
+    <div class="admin-nav-item" onclick="showSection(this, 'settings')">
+      <i class="ti ti-settings"></i> Settings
+    </div>
+
+    <div class="admin-logout">
+      <button class="logout-btn" onclick="logout()">
+        <i class="ti ti-logout"></i> Log Out
+      </button>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="admin-main">
+    <!-- HEADER -->
+    <div class="admin-header">
+      <div>
+        <h1 id="pageTitle">Dashboard</h1>
+      </div>
+      <div class="admin-user-info">
+        <div class="admin-user-avatar" id="userAvatar">A</div>
+        <div>
+          <div style="font-weight: 700; color: var(--t1);" id="userName">Admin User</div>
+          <div style="font-size: 0.85rem; color: var(--tm);">Super Admin</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════════
+         SECTION: DASHBOARD
+    ════════════════════════════════════════════════════════════════════════════ -->
+    <div class="admin-section active" id="dashboard">
+      <h2 class="section-title">Dashboard Overview</h2>
+
+      <div class="stats-grid" id="dashboardStats">
+        <div class="loading">Loading statistics...</div>
+      </div>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-weight: 700; color: var(--t1);">Recent Activities</h3>
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>User</th>
+              <th>Activity</th>
+              <th>Course</th>
+              <th>Date</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody id="recentActivitiesBody">
+            <tr>
+              <td colspan="5" class="loading">Loading activities...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════════
+         SECTION: USERS
+    ════════════════════════════════════════════════════════════════════════════ -->
+    <div class="admin-section" id="users">
+      <h2 class="section-title">User Management</h2>
+
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Stream</th>
+              <th>Joined</th>
+              <th>Role</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="usersTableBody">
+            <tr>
+              <td colspan="6" class="loading">Loading users...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════════
+         SECTION: COURSES
+    ════════════════════════════════════════════════════════════════════════════ -->
+    <div class="admin-section" id="courses">
+      <h2 class="section-title">Course Management</h2>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Course Title</label>
+          <input type="text" id="courseTitle" placeholder="e.g., Web Development Basics"/>
+        </div>
+        <div class="form-group">
+          <label>Category</label>
+          <select id="courseCategory">
+            <option>Web Development</option>
+            <option>Data Science</option>
+            <option>Design</option>
+            <option>Business</option>
+            <option>General</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Stream</label>
+          <select id="courseStream">
+            <option value="general">General</option>
+            <option value="ics">ICS</option>
+            <option value="engineering">Engineering</option>
+            <option value="medical">Medical</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Resource URL</label>
+          <input type="text" id="courseUrl" placeholder="e.g., https://example.com"/>
+        </div>
+        <div class="form-group">
+          <label>Duration (hours)</label>
+          <input type="number" id="courseDuration" placeholder="e.g., 40"/>
+        </div>
+        <div class="form-group">
+          <label>Level</label>
+          <select id="courseLevel">
+            <option>Beginner</option>
+            <option>Intermediate</option>
+            <option>Advanced</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="admin-action-btns">
+        <button class="admin-btn admin-btn-primary" onclick="addCourse()">Add Course</button>
+        <button class="admin-btn admin-btn-secondary" onclick="clearCourseForm()">Clear</button>
+      </div>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-weight: 700; color: var(--t1);">Existing Courses</h3>
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Title</th>
+              <th>Category</th>
+              <th>Stream</th>
+              <th>Level</th>
+              <th>Duration</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="coursesTableBody">
+            <tr>
+              <td colspan="6" class="loading">Loading courses...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════════
+         SECTION: CAREERS
+    ════════════════════════════════════════════════════════════════════════════ -->
+    <div class="admin-section" id="careers">
+      <h2 class="section-title">Career Path Management</h2>
+
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Career Title</label>
+          <input type="text" id="careerTitle" placeholder="e.g., Frontend Developer"/>
+        </div>
+        <div class="form-group">
+          <label>Stream</label>
+          <select id="careerStream">
+            <option>ICS</option>
+            <option>Pre-Engineering</option>
+            <option>Pre-Medical</option>
+            <option>Commerce</option>
+            <option>Arts</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Demand Level</label>
+          <select id="careerDemand">
+            <option>Very High</option>
+            <option>High</option>
+            <option>Medium</option>
+            <option>Low</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="admin-action-btns">
+        <button class="admin-btn admin-btn-primary" onclick="addCareer()">Add Career Path</button>
+        <button class="admin-btn admin-btn-secondary" onclick="clearCareerForm()">Clear</button>
+      </div>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-weight: 700; color: var(--t1);">Existing Career Paths</h3>
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Career Title</th>
+              <th>Stream</th>
+              <th>Demand Level</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="careersTableBody">
+            <tr>
+              <td colspan="4" class="loading">Loading careers...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════════
+         SECTION: PROGRESS ⭐ NEW
+    ════════════════════════════════════════════════════════════════════════════ -->
+    <div class="admin-section" id="progress">
+      <h2 class="section-title">Student Progress Tracking</h2>
+
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Student Name</th>
+              <th>Email</th>
+              <th>Stream</th>
+              <th>Completed Courses</th>
+              <th>Progress %</th>
+              <th>Last Activity</th>
+            </tr>
+          </thead>
+          <tbody id="progressTableBody">
+            <tr>
+              <td colspan="6" class="loading">Loading progress data...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════════
+         SECTION: ANALYTICS
+    ════════════════════════════════════════════════════════════════════════════ -->
+    <div class="admin-section" id="analytics">
+      <h2 class="section-title">Analytics & Reports</h2>
+
+      <div class="stats-grid" id="analyticsStats">
+        <div class="loading">Loading analytics...</div>
+      </div>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-weight: 700; color: var(--t1);">Top Performing Courses</h3>
+      <div class="admin-table-container">
+        <table class="admin-table">
+          <thead>
+            <tr>
+              <th>Course</th>
+              <th>Enrollments</th>
+              <th>Rating</th>
+            </tr>
+          </thead>
+          <tbody id="topCoursesBody">
+            <tr>
+              <td colspan="3" class="loading">Loading courses...</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- ════════════════════════════════════════════════════════════════════════════
+         SECTION: SETTINGS
+    ════════════════════════════════════════════════════════════════════════════ -->
+    <div class="admin-section" id="settings">
+      <h2 class="section-title">Settings</h2>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-weight: 700; color: var(--t1);">General Settings</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Platform Name</label>
+          <input type="text" value="BeginnerPath"/>
+        </div>
+        <div class="form-group">
+          <label>Support Email</label>
+          <input type="email" value="support@beginnerpath.com"/>
+        </div>
+        <div class="form-group">
+          <label>Support Phone</label>
+          <input type="tel" value="+92 300 1234567"/>
+        </div>
+      </div>
+
+      <h3 style="margin-top: 2rem; margin-bottom: 1rem; font-weight: 700; color: var(--t1);">API Settings</h3>
+      <div class="form-grid">
+        <div class="form-group">
+          <label>Backend URL</label>
+          <input type="text" id="backendUrl" value="http://localhost:5000" placeholder="http://localhost:5000"/>
+        </div>
+      </div>
+
+      <div class="admin-action-btns">
+        <button class="admin-btn admin-btn-primary" onclick="saveSettings()">Save Settings</button>
+        <button class="admin-btn admin-btn-secondary" onclick="resetSettings()">Reset</button>
+      </div>
+    </div>
+  </main>
+
+  <!-- SCRIPTS -->
+  <script>
+    // ═══════════════════════════════════════════════════════════════════════════
+    // CONFIGURATION
+    // ═══════════════════════════════════════════════════════════════════════════
+    const API_BASE_URL = localStorage.getItem('backendUrl') || 'http://localhost:5000';
+    const AUTH_TOKEN = localStorage.getItem('authToken');
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // INITIALIZATION
+    // ═══════════════════════════════════════════════════════════════════════════
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!AUTH_TOKEN) {
+        window.location.href = 'login.html';
+        return;
+      }
+      loadDashboardData();
+    });
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // API FUNCTIONS
+    // ═══════════════════════════════════════════════════════════════════════════
+    async function apiCall(endpoint, method = 'GET', data = null) {
+      try {
+        const options = {
+          method,
+          headers: {
+            'Authorization': `Bearer ${AUTH_TOKEN}`,
+            'Content-Type': 'application/json'
+          }
+        };
+
+        if (data) {
+          options.body = JSON.stringify(data);
+        }
+
+        const response = await fetch(`${API_BASE_URL}${endpoint}`, options);
+        
+        // 🔴 FIX: Added 403 here so admin-panel redirects on Forbidden access
+        if (response.status === 401 || response.status === 403) {
+          localStorage.clear();
+          window.location.href = 'login.html';
+          return null;
+        }
+
+        if (!response.ok) {
+          throw new Error(`API Error: ${response.status}`);
+        }
+
+        return await response.json();
+      } catch (error) {
+        console.error('API Error:', error);
+        showError(`Failed to fetch data. Make sure backend is running at ${API_BASE_URL}`);
+        return null;
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // DASHBOARD
+    // ═══════════════════════════════════════════════════════════════════════════
+    async function loadDashboardData() {
+      const stats = await apiCall('/api/admin/dashboard/stats');
+      const activities = await apiCall('/api/admin/dashboard/activities');
+
+      if (stats) {
+        renderDashboardStats(stats);
+      }
+
+      if (activities) {
+        renderRecentActivities(activities);
+      }
+    }
+
+    function renderDashboardStats(stats) {
+      const container = document.getElementById('dashboardStats');
+      const statCards = [
+        { label: 'Total Users', value: stats.totalUsers || 0, icon: '👥' },
+        { label: 'Total Courses', value: stats.totalCourses || 0, icon: '📚' },
+        { label: 'Completions', value: stats.totalCompletions || 0, icon: '🎓' },
+        { label: 'Avg. Rating', value: stats.avgRating || '0/5', icon: '⭐' }
+      ];
+
+      container.innerHTML = statCards.map(card => `
+        <div class="stat-card">
+          <span class="stat-icon">${card.icon}</span>
+          <div class="stat-label">${card.label}</div>
+          <div class="stat-value">${card.value}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderRecentActivities(activities) {
+      const tbody = document.getElementById('recentActivitiesBody');
+      
+      if (!activities.length) {
+        tbody.innerHTML = '<tr><td colspan="5" style="text-align: center; color: var(--tm);">No activities yet</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = activities.map(activity => `
+        <tr>
+          <td>${activity.userName}</td>
+          <td>${activity.activityType}</td>
+          <td>${activity.courseName}</td>
+          <td>${new Date(activity.date).toLocaleDateString()}</td>
+          <td><span class="badge badge-active">${activity.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // USERS
+    // ═══════════════════════════════════════════════════════════════════════════
+    async function loadUsers() {
+      const users = await apiCall('/api/admin/users');
+      if (users) {
+        renderUsers(users);
+      }
+    }
+
+    function renderUsers(users) {
+      const tbody = document.getElementById('usersTableBody');
+      
+      if (!users.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--tm);">No users found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = users.map(user => `
+        <tr>
+          <td>${user.name}</td>
+          <td>${user.email}</td>
+          <td>${user.stream || 'N/A'}</td>
+          <td>${new Date(user.createdAt).toLocaleDateString()}</td>
+          <td><span class="badge badge-active">${user.role || 'user'}</span></td>
+          <td>
+            <button class="admin-btn admin-btn-secondary" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="deleteUser('${user._id}')">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function deleteUser(userId) {
+      if (confirm('Are you sure you want to delete this user?')) {
+        const result = await apiCall(`/api/admin/users/${userId}`, 'DELETE');
+        if (result) {
+          alert('User deleted successfully!');
+          loadUsers();
+        }
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // COURSES
+    // ═══════════════════════════════════════════════════════════════════════════
+    async function loadCourses() {
+      const courses = await apiCall('/api/admin/courses');
+      if (courses) {
+        renderCourses(courses);
+      }
+    }
+
+    function renderCourses(courses) {
+      const tbody = document.getElementById('coursesTableBody');
+      
+      if (!courses.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--tm);">No courses found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = courses.map(course => `
+        <tr>
+          <td>${course.title}</td>
+          <td>${course.category}</td>
+          <td>${course.stream}</td>
+          <td>${course.level}</td>
+          <td>${course.duration}h</td>
+          <td>
+            <button class="admin-btn admin-btn-danger" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="deleteCourse('${course._id}')">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function addCourse() {
+      const title = document.getElementById('courseTitle').value;
+      const category = document.getElementById('courseCategory').value;
+      const stream = document.getElementById('courseStream').value;
+      const resourceUrl = document.getElementById('courseUrl').value;
+      const duration = document.getElementById('courseDuration').value;
+      const level = document.getElementById('courseLevel').value;
+
+      if (!title || !resourceUrl) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      const result = await apiCall('/api/admin/courses', 'POST', {
+        title,
+        category,
+        stream,
+        resourceUrl,
+        duration: parseInt(duration),
+        level
+      });
+
+      if (result) {
+        alert('✅ Course added successfully!');
+        clearCourseForm();
+        loadCourses();
+      }
+    }
+
+    function clearCourseForm() {
+      document.getElementById('courseTitle').value = '';
+      document.getElementById('courseUrl').value = '';
+      document.getElementById('courseDuration').value = '';
+    }
+
+    async function deleteCourse(courseId) {
+      if (confirm('Are you sure you want to delete this course?')) {
+        const result = await apiCall(`/api/admin/courses/${courseId}`, 'DELETE');
+        if (result) {
+          alert('✅ Course deleted successfully!');
+          loadCourses();
+        }
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // CAREERS
+    // ═══════════════════════════════════════════════════════════════════════════
+    async function loadCareers() {
+      const careers = await apiCall('/api/admin/careers');
+      if (careers) {
+        renderCareers(careers);
+      }
+    }
+
+    function renderCareers(careers) {
+      const tbody = document.getElementById('careersTableBody');
+      
+      if (!careers.length) {
+        tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; color: var(--tm);">No career paths found</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = careers.map(career => `
+        <tr>
+          <td>${career.title}</td>
+          <td>${career.stream}</td>
+          <td>${career.demand}</td>
+          <td>
+            <button class="admin-btn admin-btn-danger" style="font-size: 0.8rem; padding: 0.5rem 1rem;" onclick="deleteCareer('${career._id}')">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    async function addCareer() {
+      const title = document.getElementById('careerTitle').value;
+      const stream = document.getElementById('careerStream').value;
+      const demand = document.getElementById('careerDemand').value;
+
+      if (!title) {
+        alert('Please fill in all required fields');
+        return;
+      }
+
+      const result = await apiCall('/api/admin/careers', 'POST', {
+        title,
+        stream,
+        demand
+      });
+
+      if (result) {
+        alert('✅ Career path added successfully!');
+        clearCareerForm();
+        loadCareers();
+      }
+    }
+
+    function clearCareerForm() {
+      document.getElementById('careerTitle').value = '';
+    }
+
+    async function deleteCareer(careerId) {
+      if (confirm('Are you sure you want to delete this career path?')) {
+        const result = await apiCall(`/api/admin/careers/${careerId}`, 'DELETE');
+        if (result) {
+          alert('✅ Career deleted successfully!');
+          loadCareers();
+        }
+      }
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ⭐ PROGRESS
+    // ═══════════════════════════════════════════════════════════════════════════
+    async function loadProgress() {
+      const progressData = await apiCall('/api/admin/progress');
+      if (progressData) {
+        renderProgress(progressData);
+      }
+    }
+
+    function renderProgress(progressData) {
+      const tbody = document.getElementById('progressTableBody');
+      
+      if (!progressData.length) {
+        tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; color: var(--tm);">No student progress data</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = progressData.map(student => `
+        <tr>
+          <td>${student.name}</td>
+          <td>${student.email}</td>
+          <td>${student.stream || 'N/A'}</td>
+          <td>${student.completedCourses}/${student.totalCourses}</td>
+          <td>
+            <div class="progress-bar-container">
+              <div class="progress-bar">
+                <div class="progress-bar-fill" style="width: ${student.progressPercentage}%;"></div>
+              </div>
+              ${student.progressPercentage}%
+            </div>
+          </td>
+          <td>${student.lastActivityDate ? new Date(student.lastActivityDate).toLocaleDateString() : 'N/A'}</td>
+        </tr>
+      `).join('');
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // ANALYTICS
+    // ═══════════════════════════════════════════════════════════════════════════
+    async function loadAnalytics() {
+      const analytics = await apiCall('/api/admin/analytics');
+      const topCourses = await apiCall('/api/admin/courses-top/trending');
+
+      if (analytics) {
+        renderAnalyticsStats(analytics);
+      }
+
+      if (topCourses) {
+        renderTopCourses(topCourses);
+      }
+    }
+
+    function renderAnalyticsStats(analytics) {
+      const container = document.getElementById('analyticsStats');
+      const statCards = [
+        { label: 'Growth This Month', value: analytics.monthlyGrowth || '+0%', icon: '📈' },
+        { label: 'Active Students', value: analytics.activeStudents || '0', icon: '👥' },
+        { label: 'Total Students', value: analytics.totalStudents || '0', icon: '📊' },
+        { label: 'Courses Available', value: analytics.coursesAvailable || '0', icon: '📚' }
+      ];
+
+      container.innerHTML = statCards.map(card => `
+        <div class="stat-card">
+          <span class="stat-icon">${card.icon}</span>
+          <div class="stat-label">${card.label}</div>
+          <div class="stat-value">${card.value}</div>
+        </div>
+      `).join('');
+    }
+
+    function renderTopCourses(courses) {
+      const tbody = document.getElementById('topCoursesBody');
+      
+      if (!courses.length) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align: center; color: var(--tm);">No course data available</td></tr>';
+        return;
+      }
+
+      tbody.innerHTML = courses.map(course => `
+        <tr>
+          <td>${course.title}</td>
+          <td>${course.enrolledCount || 0}</td>
+          <td>${course.rating || '0'}/5</td>
+        </tr>
+      `).join('');
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // NAVIGATION (FIXED)
+    // ═══════════════════════════════════════════════════════════════════════════
+    function showSection(element, sectionId) {
+      document.querySelectorAll('.admin-section').forEach(s => {
+        s.classList.remove('active');
+      });
+
+      document.querySelectorAll('.admin-nav-item').forEach(item => {
+        item.classList.remove('active');
+      });
+
+      document.getElementById(sectionId).classList.add('active');
+      element.classList.add('active');
+
+      const titles = {
+        'dashboard': 'Dashboard',
+        'users': 'User Management',
+        'courses': 'Course Management',
+        'careers': 'Career Path Management',
+        'progress': 'Student Progress',
+        'analytics': 'Analytics & Reports',
+        'settings': 'Settings'
+      };
+      document.getElementById('pageTitle').textContent = titles[sectionId] || 'Dashboard';
+
+      // 🔴 FIX: Added check here so Dashboard reloads when you switch back
+      if (sectionId === 'dashboard') loadDashboardData();
+      else if (sectionId === 'users') loadUsers();
+      else if (sectionId === 'courses') loadCourses();
+      else if (sectionId === 'careers') loadCareers();
+      else if (sectionId === 'progress') loadProgress();
+      else if (sectionId === 'analytics') loadAnalytics();
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // SETTINGS
+    // ═══════════════════════════════════════════════════════════════════════════
+    function saveSettings() {
+      const backendUrl = document.getElementById('backendUrl').value;
+      localStorage.setItem('backendUrl', backendUrl);
+      alert('✅ Settings saved! Please refresh the page.');
+    }
+
+    function resetSettings() {
+      document.getElementById('backendUrl').value = 'http://localhost:5000';
+    }
+
+    // ═══════════════════════════════════════════════════════════════════════════
+    // UTILITIES
+    // ═══════════════════════════════════════════════════════════════════════════
+    function showError(message) {
+      const errorDiv = document.createElement('div');
+      errorDiv.className = 'error';
+      errorDiv.textContent = message;
+      document.querySelector('.admin-main').insertBefore(errorDiv, document.querySelector('.admin-main').firstChild);
+      
+      setTimeout(() => {
+        errorDiv.remove();
+      }, 5000);
+    }
+
+    function logout() {
+      if (confirm('Are you sure you want to log out?')) {
+        localStorage.clear();
+        window.location.href = 'login.html';
+      }
+    }
+  </script>
+</body>
+</html>

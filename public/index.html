@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>BeginnerPath – Find Your Career Path</title>
+  <link rel="stylesheet" href="style.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@2.44.0/tabler-icons.min.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet"/>
+  <style>
+    /* Navbar layout - logo on left, CTA on right */
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 2rem;
+    }
+
+    .logo-left {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      text-decoration: none;
+      transition: opacity 0.2s ease;
+    }
+
+    .logo-left:hover {
+      opacity: 0.85;
+    }
+
+    .logo-image {
+      height: 50px;
+      width: auto;
+      transition: transform 0.2s ease;
+    }
+
+    .logo-left:hover .logo-image {
+      transform: scale(1.05);
+    }
+
+    .logo-text {
+      font-weight: 800;
+      font-size: 1.5rem;
+      color: #0a174b;
+      letter-spacing: -0.5px;
+    }
+
+    .nav-cta {
+      display: flex;
+      gap: 0.8rem;
+      white-space: nowrap;
+      margin-left: auto;
+    }
+
+    /* Logo lightbox modal */
+    #logo-modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 10000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #logo-modal.open {
+      display: flex;
+    }
+
+    .logo-modal-content {
+      background: #fff;
+      padding: 2rem;
+      border-radius: 12px;
+      max-width: 90vw;
+      max-height: 90vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      position: relative;
+    }
+
+    .logo-modal-close {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #f3f4f6;
+      border: none;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 1.2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    .logo-modal-close:hover {
+      background: #e5e7eb;
+    }
+
+    .logo-modal-img {
+      max-width: 300px;
+      max-height: 300px;
+      width: auto;
+      height: auto;
+    }
+
+    .logo-modal-actions {
+      display: flex;
+      gap: 0.8rem;
+      margin-top: 1rem;
+    }
+
+    .logo-modal-actions button {
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-weight: 500;
+      transition: opacity 0.2s;
+    }
+
+    .logo-modal-actions button:hover {
+      opacity: 0.8;
+    }
+
+    .download-btn {
+      background: #1b3191;
+      color: #fff;
+    }
+
+    .close-modal-btn {
+      background: #e5e7eb;
+      color: #1f2937;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <header class="navbar" id="navbar">
+    <div class="container nav-inner">
+      <!-- Logo on Left (NOT a link, clickable to view) -->
+      <div class="logo-left" onclick="bpOpenLogo()" title="Click to view logo" role="button" tabindex="0" onkeydown="if(event.key==='Enter') bpOpenLogo()">
+        <img src="beginnerpath-logo.png" alt="BeginnerPath - Learn. Grow. Succeed." class="logo-image"/>
+        <span class="logo-text">BeginnerPath</span>
+      </div>
+      
+      <!-- Right: Login/Signup -->
+      <div class="nav-cta">
+        <a href="login.html" class="btn btn-ghost">Log In</a>
+        <a href="signup.html" class="btn btn-primary">Sign Up Free</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-shapes"><div class="shape s1"></div><div class="shape s2"></div></div>
+    <div class="container hero-inner">
+      <!-- Left: Text -->
+      <div class="hero-text" data-aos>
+        <div class="hero-badge"><i class="ti ti-sparkles"></i> AI-Powered Career Guidance for Pakistani Students</div>
+        <h1>Don't Know What to Do<br/>After Matric or Inter?<br/><span class="grad">We'll Guide You.</span></h1>
+        <p class="hero-sub">
+          Tell us your education stream — Pre-Medical, ICS, Commerce or Arts — and we'll show you the best career paths, complete with free courses, and a step-by-step roadmap to get hired.
+        </p>
+
+        <!-- What Happens -->
+        <div class="steps-preview">
+          <div class="step-box">
+            <div class="step-n">1</div>
+            <span>Create account (30 sec)</span>
+          </div>
+          <div class="step-box">
+            <div class="step-n">2</div>
+            <span>Tell us your stream</span>
+          </div>
+          <div class="step-box">
+            <div class="step-n">3</div>
+            <span>Get personalized roadmap</span>
+          </div>
+        </div>
+
+        <a href="signup.html" class="btn btn-primary btn-lg" style="margin-top:1.5rem">
+          <i class="ti ti-rocket"></i> Get Started Free
+        </a>
+        <p class="hero-note"><i class="ti ti-shield-check"></i> 100% Free · No credit card · No spam</p>
+      </div>
+
+
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <section class="section" id="how-it-works">
+    <div class="container">
+      <div class="sec-head">
+        <span class="sec-tag">Simple Process</span>
+        <h2>How BeginnerPath Works</h2>
+        <p>From confusion to a clear career path in 3 steps</p>
+      </div>
+      <div class="how-grid">
+        <div class="how-card" data-aos>
+          <div class="how-icon bg-blue"><i class="ti ti-clipboard-list"></i></div>
+          <div class="how-num">01</div>
+          <h3>Create Account & Tell Us Your Background</h3>
+          <p>Sign up and answer 4 simple questions about your education stream, interests, and goals. Takes 2 minutes.</p>
+          <div class="how-arr"><i class="ti ti-arrow-right"></i></div>
+        </div>
+        <div class="how-card" data-aos data-delay="100">
+          <div class="how-icon bg-purple"><i class="ti ti-brain"></i></div>
+          <div class="how-num">02</div>
+          <h3>Get AI Career Suggestions</h3>
+          <p>Our AI analyzes your profile and recommends the top 3 careers best suited for you with salary and demand info.</p>
+          <div class="how-arr"><i class="ti ti-arrow-right"></i></div>
+        </div>
+        <div class="how-card" data-aos data-delay="200">
+          <div class="how-icon bg-indigo"><i class="ti ti-map"></i></div>
+          <div class="how-num">03</div>
+          <h3>Follow Your Roadmap & Get Hired</h3>
+          <p>Get a phase-by-phase learning plan with free courses, resources, and entry-level job matches when you finish.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- STREAMS -->
+  <section class="section bg-light">
+    <div class="container">
+      <div class="sec-head">
+        <span class="sec-tag">Who Is This For?</span>
+        <h2>We Guide Every Stream</h2>
+        <p>No matter your background, we have a career path for you</p>
+      </div>
+      <div class="streams-grid">
+        <div class="stream-card" data-aos>
+          <div class="s-icon">🧬</div><h3>Pre-Medical</h3>
+          <p>Biology, Chemistry, Physics students</p>
+          <div class="s-tags"><span>Bioinformatics</span><span>Medical AI</span><span>Healthcare Data</span></div>
+        </div>
+        <div class="stream-card" data-aos data-delay="60">
+          <div class="s-icon">⚙️</div><h3>Pre-Engineering</h3>
+          <p>Math, Physics, Chemistry students</p>
+          <div class="s-tags"><span>Software Eng.</span><span>Data Science</span><span>Cloud</span></div>
+        </div>
+        <div class="stream-card" data-aos data-delay="120">
+          <div class="s-icon">💻</div><h3>ICS</h3>
+          <p>Computer Science, Math students</p>
+          <div class="s-tags"><span>Full Stack Dev</span><span>Cybersecurity</span><span>AI / ML</span></div>
+        </div>
+        <div class="stream-card" data-aos data-delay="180">
+          <div class="s-icon">📊</div><h3>Commerce</h3>
+          <p>Accounting, Economics, Business students</p>
+          <div class="s-tags"><span>FinTech</span><span>Digital Marketing</span><span>Analytics</span></div>
+        </div>
+        <div class="stream-card" data-aos data-delay="240">
+          <div class="s-icon">🎨</div><h3>Arts</h3>
+          <p>Humanities, Literature, Fine Arts</p>
+          <div class="s-tags"><span>UI/UX Design</span><span>Content</span><span>Marketing</span></div>
+        </div>
+        <div class="stream-card stream-cta" data-aos data-delay="300">
+          <div class="s-icon">🤖</div><h3>Not Sure?</h3>
+          <p>Let our AI counselor discover the best path for you.</p>
+          <a href="counselor.html" class="btn btn-white" style="margin-top:1rem;width:100%;justify-content:center">Find My Path</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div>
+          <div class="logo" style="-webkit-text-fill-color:#fff;color:#fff;margin-bottom:.75rem"><i class="ti ti-map-route" style="color:#60A5FA"></i><span>BeginnerPath</span></div>
+          <p style="font-size:.88rem;line-height:1.7;color:rgba(255,255,255,.6)">AI-powered career guidance for Pakistani students. Find your path and get hired — free forever.</p>
+        </div>
+        <div class="footer-col">
+          <h4>Platform</h4>
+          <a href="signup.html">Get Started</a><a href="login.html">Log In</a><a href="#how-it-works">How It Works</a>
+        </div>
+        <div class="footer-col">
+          <h4>Company</h4>
+          <a href="about-us.html">About</a><a href="privacy-policy.html">Privacy</a><a href="terms-conditions.html">Terms</a>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <span>© 2026 BeginnerPath. All rights reserved.</span>
+        <span>Made with ❤️ for Pakistani students</span>
+      </div>
+    </div>
+  </footer>
+
+  <button class="back-top" id="backTop"><i class="ti ti-arrow-up"></i></button>
+
+  <!-- ════════════════════════════════════════════════════════════════════════════ -->
+  <!-- AI ASSISTANT WIDGET - floating chat bubble, general-purpose, homepage only -->
+  <!-- Uses the SAME backend (/api/counselor) as counselor.html, but with a          -->
+  <!-- different, more open-ended system prompt suited for a homepage assistant    -->
+  <!-- ════════════════════════════════════════════════════════════════════════════ -->
+  <style>
+    #bp-widget-toggle {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0f1f5c 0%, #1b3191 100%);
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 16px rgba(15, 31, 92, 0.35);
+      font-size: 1.6rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      transition: transform 0.2s ease;
+    }
+
+    #bp-widget-toggle:hover {
+      transform: scale(1.08);
+    }
+
+    #bp-widget-panel {
+      position: fixed;
+      bottom: 96px;
+      right: 24px;
+      width: 340px;
+      max-width: calc(100vw - 32px);
+      height: 460px;
+      max-height: calc(100vh - 140px);
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+      z-index: 9999;
+      font-family: 'Inter', sans-serif;
+      border: 1px solid #e5e7eb;
+    }
+
+    #bp-widget-panel.open {
+      display: flex;
+    }
+
+    .bp-widget-header {
+      background: linear-gradient(135deg, #0f1f5c 0%, #1b3191 100%);
+      color: #fff;
+      padding: 0.9rem 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .bp-widget-header strong {
+      font-size: 0.95rem;
+    }
+
+    .bp-widget-header span {
+      font-size: 0.75rem;
+      color: #f0b429;
+      display: block;
+    }
+
+    .bp-widget-close {
+      background: none;
+      border: none;
+      color: #fff;
+      font-size: 1.1rem;
+      cursor: pointer;
+      opacity: 0.8;
+    }
+
+    .bp-widget-close:hover { opacity: 1; }
+
+    #bp-widget-messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 0.9rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      background: #f9fafb;
+    }
+
+    .bp-msg {
+      max-width: 85%;
+      padding: 0.55rem 0.8rem;
+      border-radius: 10px;
+      font-size: 0.85rem;
+      line-height: 1.45;
+      word-wrap: break-word;
+    }
+
+    .bp-msg.user {
+      align-self: flex-end;
+      background: #1b3191;
+      color: #fff;
+      border-bottom-right-radius: 2px;
+    }
+
+    .bp-msg.ai {
+      align-self: flex-start;
+      background: #fff;
+      border: 1px solid #e5e7eb;
+      color: #1f2937;
+      border-bottom-left-radius: 2px;
+    }
+
+    .bp-widget-input-row {
+      display: flex;
+      gap: 0.5rem;
+      padding: 0.75rem;
+      border-top: 1px solid #e5e7eb;
+      background: #fff;
+    }
+
+    #bp-widget-input {
+      flex: 1;
+      border: 1.5px solid #e5e7eb;
+      border-radius: 8px;
+      padding: 0.5rem 0.7rem;
+      font-size: 0.85rem;
+      outline: none;
+      font-family: 'Inter', sans-serif;
+    }
+
+    #bp-widget-input:focus {
+      border-color: #1b3191;
+    }
+
+    #bp-widget-send {
+      background: #1b3191;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 0 0.9rem;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+
+    #bp-widget-send:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+  </style>
+
+  <!-- Logo Modal -->
+  <div id="logo-modal">
+    <div class="logo-modal-content">
+      <button class="logo-modal-close" onclick="bpCloseLogo()">✕</button>
+      <img src="beginnerpath-logo.png" alt="BeginnerPath Logo" class="logo-modal-img"/>
+      <div class="logo-modal-actions">
+        <button class="download-btn" onclick="bpDownloadLogo()">
+          <i class="ti ti-download"></i> Download Logo
+        </button>
+        <button class="close-modal-btn" onclick="bpCloseLogo()">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <button id="bp-widget-toggle" onclick="bpToggleWidget()">
+    <i class="ti ti-message-chatbot"></i>
+  </button>
+
+  <div id="bp-widget-panel">
+    <div class="bp-widget-header">
+      <div>
+        <strong>🤖 BeginnerPath Assistant</strong>
+        <span>Ask me anything</span>
+      </div>
+      <button class="bp-widget-close" onclick="bpToggleWidget()">✕</button>
+    </div>
+    <div id="bp-widget-messages">
+      <div class="bp-msg ai">Hi! Ask me anything — about BeginnerPath, careers, or just general questions.</div>
+    </div>
+    <div class="bp-widget-input-row">
+      <input type="text" id="bp-widget-input" placeholder="Type a message..." autocomplete="off"/>
+      <button id="bp-widget-send" onclick="bpSendMessage()"><i class="ti ti-send"></i></button>
+    </div>
+  </div>
+
+  <script>
+    const BP_BACKEND_URL = 'http://localhost:5000';
+    let bpConversationHistory = [];
+
+    // Logo modal functions
+    function bpOpenLogo() {
+      document.getElementById('logo-modal').classList.add('open');
+    }
+
+    function bpCloseLogo() {
+      document.getElementById('logo-modal').classList.remove('open');
+    }
+
+    function bpDownloadLogo() {
+      const link = document.createElement('a');
+      link.href = 'beginnerpath-logo.png';
+      link.download = 'beginnerpath-logo.png';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+
+    // Close modal when clicking outside
+    document.getElementById('logo-modal')?.addEventListener('click', function(e) {
+      if (e.target === this) {
+        bpCloseLogo();
+      }
+    });
+
+    // General-purpose system prompt - deliberately different from the
+    // dedicated counselor.html prompt, since this widget should answer
+    // ANY type of question, not just career-focused ones.
+    const BP_WIDGET_SYSTEM_PROMPT = `You are the BeginnerPath Assistant, a friendly general-purpose helper embedded on the BeginnerPath homepage - an educational platform for Pakistani students.
+
+You can answer ANY type of question the user asks - general knowledge, casual conversation, homework help, coding questions, or anything else. You are not restricted to career topics only.
+
+When relevant, you can naturally mention that BeginnerPath also has a dedicated AI Career Counselor (for personalized career/course guidance) and free courses/roadmaps available after signing up - but only mention this if it's genuinely relevant to what the user asked, not on every message.
+
+RESPONSE STYLE:
+- Keep answers concise and clear (this is a small chat widget, not a full page)
+- Be warm, friendly, and helpful
+- Use simple formatting - short paragraphs, occasional bullet points
+- Never assume the user's background, stream, or goals unless they tell you`;
+
+    function bpToggleWidget() {
+      document.getElementById('bp-widget-panel').classList.toggle('open');
+    }
+
+    function bpRenderMarkdown(text) {
+      let safe = text
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;');
+      safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+      safe = safe.replace(/\n/g, '<br>');
+      return safe;
+    }
+
+    function bpAddMessage(text, role) {
+      const messagesDiv = document.getElementById('bp-widget-messages');
+      const msgDiv = document.createElement('div');
+      msgDiv.className = `bp-msg ${role}`;
+      if (role === 'ai') {
+        msgDiv.innerHTML = bpRenderMarkdown(text);
+      } else {
+        msgDiv.textContent = text;
+      }
+      messagesDiv.appendChild(msgDiv);
+      messagesDiv.scrollTop = messagesDiv.scrollHeight;
+    }
+
+    async function bpSendMessage() {
+      const input = document.getElementById('bp-widget-input');
+      const message = input.value.trim();
+      if (!message) return;
+
+      bpAddMessage(message, 'user');
+      input.value = '';
+
+      bpConversationHistory.push({ role: 'user', content: message });
+
+      const sendBtn = document.getElementById('bp-widget-send');
+      sendBtn.disabled = true;
+
+      try {
+        const response = await fetch(`${BP_BACKEND_URL}/api/counselor`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            userMessage: message,
+            conversationHistory: bpConversationHistory,
+            systemPrompt: BP_WIDGET_SYSTEM_PROMPT
+          })
+        });
+
+        if (!response.ok) throw new Error(`API Error: ${response.status}`);
+
+        const data = await response.json();
+        if (data.counselorResponse) {
+          bpAddMessage(data.counselorResponse, 'ai');
+          bpConversationHistory.push({ role: 'assistant', content: data.counselorResponse });
+        }
+      } catch (error) {
+        bpAddMessage('Sorry, I could not connect right now. Please make sure the backend is running.', 'ai');
+      } finally {
+        sendBtn.disabled = false;
+        input.focus();
+      }
+    }
+
+    document.getElementById('bp-widget-input').addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        bpSendMessage();
+      }
+    });
+  </script>
+
+  <script src="main.js"></script>
+</body>
+</html>
