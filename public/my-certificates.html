@@ -96,7 +96,7 @@
       console.log('✅ Token found, loading certificates...');
 
       try {
-        const res = await fetch('http://localhost:5000/api/student/certificates', {
+        const res = await fetch('https://beginnerpath-backend-1.samiasohail650.repl.co/api/student/certificates', {
           headers: { 
             'Authorization': `Bearer ${token.trim()}`,
             'Content-Type': 'application/json'
