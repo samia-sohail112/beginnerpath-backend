@@ -754,8 +754,7 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Backend URL</label>
-          <!-- ✅ FIXED: Default to live Vercel URL -->
-          <input type="text" id="backendUrl" value="https://beginnerpath-backend.vercel.app" placeholder="Backend URL"/>
+          <input type="text" id="backendUrl" value="https://beginnerpath-backend.username.repl.co" placeholder="Backend URL"/>
         </div>
       </div>
 
@@ -771,7 +770,6 @@
     // ═══════════════════════════════════════════════════════════════════════════
     // CONFIGURATION
     // ═══════════════════════════════════════════════════════════════════════════
-    // ✅ FIXED: Use live Vercel URL as default
     const API_BASE_URL = localStorage.getItem('backendUrl') || 'https://beginnerpath-backend.username.repl.co';
     const AUTH_TOKEN = localStorage.getItem('authToken');
 
@@ -1195,13 +1193,12 @@
       const backendUrl = document.getElementById('backendUrl').value;
       localStorage.setItem('backendUrl', backendUrl);
       alert('✅ Settings saved! Please refresh the page.');
-      // Update the API_BASE_URL variable for subsequent calls (though a refresh is required)
-      // For immediate effect, we could reassign, but a page reload is simpler.
     }
 
     function resetSettings() {
-      document.getElementById('backendUrl').value = 'https://beginnerpath-backend.vercel.app';
+      document.getElementById('backendUrl').value = 'https://beginnerpath-backend.username.repl.co';
     }
+
     function showError(message) {
       const errorDiv = document.createElement('div');
       errorDiv.className = 'error';
