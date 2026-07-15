@@ -1,0 +1,1 @@
+mongodb+srv://samiasohail650_db_user:begginerpath2026@fyp-project.nbhzeva.mongodb.net/beginnerpath?appName=fyp-project
