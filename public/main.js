@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:5000';
+const BP_BACKEND_URL = 'https://beginnerpath-backend-1.samiasohail650.repl.co';
 document.addEventListener("DOMContentLoaded", () => {
   initNavScroll();
   initAOS();
