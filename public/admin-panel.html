@@ -754,7 +754,8 @@
       <div class="form-grid">
         <div class="form-group">
           <label>Backend URL</label>
-          <input type="text" id="backendUrl" value="http://localhost:5000" placeholder="http://localhost:5000"/>
+          <!-- ✅ FIXED: Default to live Vercel URL -->
+          <input type="text" id="backendUrl" value="https://beginnerpath-backend.vercel.app" placeholder="Backend URL"/>
         </div>
       </div>
 
@@ -770,7 +771,8 @@
     // ═══════════════════════════════════════════════════════════════════════════
     // CONFIGURATION
     // ═══════════════════════════════════════════════════════════════════════════
-    const API_BASE_URL = localStorage.getItem('backendUrl') || 'http://localhost:5000';
+    // ✅ FIXED: Use live Vercel URL as default
+    const API_BASE_URL = localStorage.getItem('backendUrl') || 'https://beginnerpath-backend.vercel.app';
     const AUTH_TOKEN = localStorage.getItem('authToken');
 
     // ═══════════════════════════════════════════════════════════════════════════
@@ -781,6 +783,8 @@
         window.location.href = 'login.html';
         return;
       }
+      // Ensure the input field shows the current URL
+      document.getElementById('backendUrl').value = API_BASE_URL;
       loadDashboardData();
     });
 
@@ -1191,15 +1195,13 @@
       const backendUrl = document.getElementById('backendUrl').value;
       localStorage.setItem('backendUrl', backendUrl);
       alert('✅ Settings saved! Please refresh the page.');
+      // Update the API_BASE_URL variable for subsequent calls (though a refresh is required)
+      // For immediate effect, we could reassign, but a page reload is simpler.
     }
 
     function resetSettings() {
-      document.getElementById('backendUrl').value = 'http://localhost:5000';
+      document.getElementById('backendUrl').value = 'https://beginnerpath-backend.vercel.app';
     }
-
-    // ═══════════════════════════════════════════════════════════════════════════
-    // UTILITIES
-    // ═══════════════════════════════════════════════════════════════════════════
     function showError(message) {
       const errorDiv = document.createElement('div');
       errorDiv.className = 'error';
